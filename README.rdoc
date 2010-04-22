@@ -39,6 +39,31 @@ request helpers feature.
 
   end
 
+== Testing a config.ru
+
+You can also use Rack::Test without an explicit app method.  In this case it
+will check for a CONFIG_RU constant and if that is missing look for a 
+config.ru one level up from the test file
+
+  require "rack/test"
+
+  class HomepageTest < Test::Unit::TestCase
+    include Rack::Test::Methods
+
+    #Only needed if it varies from this
+    #CONFIG_RU = File.dirname(__FILE__) + '/../config.ru'
+
+    def test_redirect_logged_in_users_to_dashboard
+      authorize "bryan", "secret"
+      get "/"
+      follow_redirect!
+
+      assert_equal "http://example.org/redirected", last_request.url
+      assert last_response.ok?
+    end
+
+  end
+
 == Install
 
 To install the latest release as a gem:

@@ -20,6 +20,20 @@ module Rack
     module Methods
       extend Forwardable
 
+      def method_missing(methId, *argv)
+        if methId == :app
+          if defined?(CONFIG_RU)
+            config_ru = CONFIG_RU
+          else
+            calling_file = caller.first.split(":").first
+            config_ru = ::File.dirname(calling_file) + '/../config.ru'
+          end
+          eval "Rack::Builder.new {( " +::File.read(config_ru) + "\n )}"
+        else
+          super
+        end
+      end
+
       def rack_mock_session(name = :default) # :nodoc:
         return build_rack_mock_session unless name
 

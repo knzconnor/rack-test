@@ -9,6 +9,8 @@ require File.dirname(__FILE__) + "/fixtures/fake_app"
 Spec::Runner.configure do |config|
   config.include Rack::Test::Methods
 
+  CONFIG_RU = nil #make sure it is testing the actual helper defined app method
+
   def app
     Rack::Lint.new(Rack::Test::FakeApp.new)
   end

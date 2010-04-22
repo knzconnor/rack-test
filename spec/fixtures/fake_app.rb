@@ -1,9 +1,9 @@
-require "sinatra/base"
+require "sinatra"
 
 module Rack
   module Test
 
-    class FakeApp < Sinatra::Default
+    class FakeApp < Sinatra::Base
       head "/" do
         "meh"
       end
